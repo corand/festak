@@ -19,8 +19,10 @@ botonera = soup.findAll("div", {"class", "botonera"})
 botoiak = botonera[0].findAll("a")
 
 for botoi in botoiak:
-	print botoi
-
-
-# linkak = soup.findAll("img", {"class", "marcofotomini"})
-# print linkak
+	linka = botoi["href"]
+	urlpag = "http://www.festak.com/" + linka + "&ev=" +kodea
+	rpag = requests.get(urlpag)
+	soupag = BeautifulSoup(rpag.content)
+	linkak = soupag.findAll("img")
+	print linkak
+	# print linkak
