@@ -7,13 +7,6 @@ import json,httplib,urllib
 import urllib2
 import time
 
-display = Xvfb()
-display.start()
-delay = 40 # seconds
-
-caps = webdriver.DesiredCapabilities().FIREFOX
-caps["marionette"] = False
-driver = webdriver.Firefox(capabilities=caps)
 
 kodea = raw_input("Sartu bildumako kodea: url-an 'ev=' ondoren agertzen dena. Adib: 1600 \n Kodea: ")
 
