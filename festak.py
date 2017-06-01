@@ -5,7 +5,20 @@ import datetime
 from bs4 import BeautifulSoup
 import json,httplib,urllib
 import urllib2
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from xvfbwrapper import Xvfb
+import time
 
+display = Xvfb()
+display.start()
+delay = 3 # seconds
+
+caps = webdriver.DesiredCapabilities().FIREFOX
+caps["marionette"] = False
+driver = webdriver.Firefox(capabilities=caps)
 
 kodea = raw_input("Sartu bildumako kodea: url-an 'ev=' ondoren agertzen dena. Adib: 1600 \n Kodea: ")
 
@@ -20,9 +33,17 @@ botoiak = botonera[0].findAll("a")
 
 for botoi in botoiak:
 	linka = botoi["href"]
-	urlpag = "http://www.festak.com/" + linka + "&ev=" +kodea
-	rpag = requests.get(urlpag)
-	soupag = BeautifulSoup(rpag.content)
-	linkak = soupag.findAll("img")
-	print linkak
-	# print linkak
+	driver.get("http://www.festak.com/"+linka+"&ev="+kodea)
+	try:
+		WebDriverWait(driver, delay).until(EC.presence_of_element_located(driver.find_element_by_id('IdOfMyElement')))
+		print "ready!"
+	except TimeoutException:
+		print "Loading took too much time!"
+
+	html = driver.page_source
+	soup = BeautifulSoup(html)
+	
+	irudiak = soup.findAll("img", {"class", "marcofotomini"})
+	for irudi in irudiak:
+		print irudi
+	
