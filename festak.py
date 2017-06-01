@@ -24,7 +24,7 @@ botoiak = botonera[0].findAll("a")
 
 for botoi in botoiak:
 	linka = botoi["href"]
-	req = requests.get(url)
+	req = requests.get("http://www.festak.com/"+linka+"&ev="+kodea)
 	soup = BeautifulSoup(req.content)
 
 	irudiak = soup.findAll("img", {"class", "marcofotomini"})
