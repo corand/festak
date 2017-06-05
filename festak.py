@@ -14,20 +14,22 @@ import os
 kodea = raw_input("Sartu bildumako kodea: url-an 'ev=' ondoren agertzen dena. Adib: 1600 \n Kodea: ")
 
 
+# karpeta sortu kodearen izenarekin
 directory = './' + kodea
 if not os.path.exists(directory):
 	os.makedirs(directory)
 
+# orri guztien url-a lortu
 url = "http://www.festak.com/visor5.php?mt=1&pag=p&ev=" + kodea
 
 s = requests.Session()
 r = s.get(url)
-
 soup = BeautifulSoup(r.text, 'html.parser')
 
 botonera = soup.findAll("div", {"class", "botonera"})
 botoiak = botonera[0].findAll("a")
 
+# argazkiak dituen orri bakoitzeko, argazki guztiak bilatu
 with progressbar.ProgressBar(max_value=len(botoiak)) as bar:
 	for idx, botoi in enumerate(botoiak):
 		pag = idx+1
